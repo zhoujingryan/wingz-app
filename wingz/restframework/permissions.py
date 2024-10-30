@@ -1,9 +1,12 @@
-from rest_framework.permissions import BasePermission
+from rest_framework.permissions import IsAuthenticated
 
 from wingz_sso.constants import UserRole
 
 
-class IsAdminUser(BasePermission):
+class IsAdminUser(IsAuthenticated):
 
     def has_permission(self, request, view):
-        return bool(request.user and request.user.role == UserRole.ADMIN)
+        return (
+            super().has_permission(request, view)
+            and request.user.role == UserRole.ADMIN
+        )
