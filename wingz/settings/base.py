@@ -129,6 +129,7 @@ REST_FRAMEWORK = {
         "django_filters.rest_framework.DjangoFilterBackend",
         "rest_framework.filters.SearchFilter",
     ),
+    "DEFAULT_PAGINATION_CLASS": "wingz.restframework.pagination.BasePageNumberPagination",
     "EXCEPTION_HANDLER": "wingz.restframework.exceptions.error_handler",
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
     # JWT
