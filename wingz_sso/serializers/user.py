@@ -6,4 +6,4 @@ from ..models import User
 class UserModelSerializer(BaseModelSerializer):
     class Meta:
         model = User
-        exclude = ["password"]
+        exclude = ["password", "last_login"]

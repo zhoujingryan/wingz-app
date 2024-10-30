@@ -1,9 +1,11 @@
+import datetime
+
 from django.urls import reverse
 from django_fakery.faker_factory import factory
 
 from wingz.restframework.tests import BaseAPITestCase
 from wingz_riding.constants import RideStatus
-from wingz_riding.models import Ride
+from wingz_riding.models import Ride, RideEvent
 from wingz_sso.constants import UserRole
 from wingz_sso.models import User
 
@@ -77,3 +79,24 @@ class RideViewSetAdminTestCase(BaseAPITestCase):
         assert response.status_code == 200
         data = response.data
         assert data["count"] == 7
+
+    def test_rides_list_with_relational_data(self):
+        rider = factory.m(User)(email="test-rider@email.com")
+        driver = factory.m(User)(email="test-driver2@email.com")
+
+        ride = factory.m(Ride)(rider=rider, driver=driver)
+        factory.m(RideEvent)(id_ride_event=1, ride=ride)
+        factory.m(RideEvent)(id_ride_event=2, ride=ride)
+        event = factory.m(RideEvent)(id_ride_event=3, ride=ride)
+        event.created_at = datetime.datetime.now() - datetime.timedelta(hours=25)
+        event.save()
+
+        url = reverse("riding-rides-list")
+        response = self.client.get(url)
+        assert response.status_code == 200
+        data = response.data
+        assert data["count"] == 1
+        obj = data["results"][0]
+        assert [e["id_ride_event"] for e in obj["events"]] == [2, 1]
+        assert obj["rider"]["email"] == rider.email
+        assert obj["driver"]["email"] == driver.email
