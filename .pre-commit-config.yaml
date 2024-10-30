@@ -32,6 +32,13 @@ repos:
     hooks:
       - id: black
 
+  - repo: local
+    hooks:
+      - id: test-runner
+        name: run project tests
+        entry: make test
+        language: system
+
 exclude: |
   (?x)^(
     etc|
