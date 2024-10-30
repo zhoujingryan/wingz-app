@@ -15,4 +15,40 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-urlpatterns = []
+from django.conf import settings
+from django.conf.urls import include
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.urls import path, re_path
+
+from wingz.utils.swagger_view import schema_view
+
+urlpatterns = [
+    # API V1
+    path(r"api/v1/sso/", include("wingz_sso.urls")),
+]
+
+
+if settings.DEBUG:
+    urlpatterns += staticfiles_urlpatterns()
+    # swagger docs v1
+    urlpatterns += [
+        re_path(
+            r"^swagger(?P<format>\.json|\.yaml)$",
+            schema_view.without_ui(cache_timeout=0),
+            name="schema-json",
+        ),
+        re_path(
+            r"^api/docs/$",
+            schema_view.with_ui("swagger", cache_timeout=0),
+            name="schema-swagger-ui",
+        ),
+    ]
+
+
+if settings.DEBUG:
+    try:
+        import debug_toolbar
+
+        urlpatterns += [path("__debug__/", include(debug_toolbar.urls))]
+    except ImportError:
+        pass

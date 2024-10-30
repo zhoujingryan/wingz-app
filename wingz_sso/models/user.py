@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from wingz_sso.constants import UserRole
+
 
 class UserManager(BaseUserManager):
     def _create_user(self, email, password, **extra_fields):
@@ -18,7 +20,7 @@ class UserManager(BaseUserManager):
         return user
 
     def create_user(self, email, password=None, **extra_fields):
-        extra_fields.setdefault("role", User.UserRole.REGULAR)
+        extra_fields.setdefault("role", UserRole.REGULAR)
         return self._create_user(email, password, **extra_fields)
 
 
@@ -28,10 +30,6 @@ class User(AbstractBaseUser):
         verbose_name = _("user")
         verbose_name_plural = _("users")
         db_table = "sso_user"
-
-    class UserRole(models.TextChoices):
-        ADMIN = "admin", "Admin"
-        REGULAR = "regular_user", "Regular User"
 
     id_user = models.BigAutoField(primary_key=True)
     email = models.EmailField(_("email address"), unique=True)

@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import datetime
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,22 +32,18 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    # 'django.contrib.admin',
     "django.contrib.auth",
     "django.contrib.contenttypes",
-    # 'django.contrib.sessions',
-    # 'django.contrib.messages',
-    # 'django.contrib.staticfiles',
+    "django_extensions",
+    "rest_framework",
+    "django_filters",
+    "drf_yasg",
     "wingz_sso",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    # 'django.contrib.sessions.middleware.SessionMiddleware',
     "django.middleware.common.CommonMiddleware",
-    # 'django.middleware.csrf.CsrfViewMiddleware',
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    # 'django.contrib.messages.middleware.MessageMiddleware',
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
@@ -125,3 +122,33 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # user model
 AUTH_USER_MODEL = "wingz_sso.User"
+
+# rest framework
+REST_FRAMEWORK = {
+    "DEFAULT_FILTER_BACKENDS": (
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.SearchFilter",
+    ),
+    "EXCEPTION_HANDLER": "wingz.restframework.exceptions.error_handler",
+    "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
+    # JWT
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+}
+
+# jwt
+SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": ("JWT",),
+    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(minutes=10),
+    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=3),
+}
+
+# api docs
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "api_key": {"type": "apiKey", "in": "header", "name": "Authorization"}
+    },
+    "DEFAULT_AUTO_SCHEMA_CLASS": "wingz.utils.swagger_view.CustomSwaggerAutoSchema",
+}
