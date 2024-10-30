@@ -18,4 +18,4 @@ class PasswordLoginAPIView(TokenObtainPairView):
         operation_summary="user password login",
     )
     def post(self, request, *args, **kwargs):
-        return super().post(request, *args, **kwargs)  # pragma: no cover
+        return super().post(request, *args, **kwargs)

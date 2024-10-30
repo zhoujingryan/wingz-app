@@ -6,6 +6,6 @@ from ..serializers.user import UserModelSerializer
 
 
 class UserViewSet(BaseReadOnlyModelViewSet):
-    queryset = User.objects.all()
+    queryset = User.objects.order_by("-id_user")
     serializer_class = UserModelSerializer
     permission_classes = (IsAdminUser,)
