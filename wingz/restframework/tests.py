@@ -2,6 +2,7 @@ from rest_framework.test import APITestCase
 from rest_framework_simplejwt.settings import api_settings
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from wingz_sso.constants import UserRole
 from wingz_sso.models import User
 
 
@@ -16,7 +17,7 @@ class BaseAPITestCase(APITestCase):
 
     def set_current_user(self):
         self.user, _ = User.objects.get_or_create(
-            email="test@test.com", role=User.UserRole.ADMIN
+            email="test@test.com", role=UserRole.ADMIN
         )
 
     def setUp(self):

@@ -10,6 +10,6 @@ from ..serializers.ride import RideModelSerializer
 
 class RideViewSet(mixins.ListModelMixin, BaseGenericViewSet):
     permission_classes = (IsAdminUser,)
-    queryset = Ride.objects
+    queryset = Ride.objects.order_by("-pk")
     serializer_class = RideModelSerializer
     filterset_class = RideFilter
