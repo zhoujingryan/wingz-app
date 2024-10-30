@@ -97,6 +97,6 @@ class RideViewSetAdminTestCase(BaseAPITestCase):
         data = response.data
         assert data["count"] == 1
         obj = data["results"][0]
-        assert [e["id_ride_event"] for e in obj["events"]] == [2, 1]
+        assert [e["id_ride_event"] for e in obj["todays_ride_events"]] == [2, 1]
         assert obj["rider"]["email"] == rider.email
         assert obj["driver"]["email"] == driver.email

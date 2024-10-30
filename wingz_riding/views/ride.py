@@ -15,7 +15,7 @@ from ..serializers import RideEventModelSerializer, RideModelSerializer
 class RideSerializer(RideModelSerializer):
     driver = UserModelSerializer()
     rider = UserModelSerializer()
-    events = RideEventModelSerializer(many=True)
+    todays_ride_events = RideEventModelSerializer(many=True)
 
 
 class RideViewSet(mixins.ListModelMixin, BaseGenericViewSet):
@@ -33,6 +33,7 @@ class RideViewSet(mixins.ListModelMixin, BaseGenericViewSet):
                 queryset=RideEvent.objects.filter(
                     created_at__gte=_24_hours_ago
                 ).order_by("-created_at"),
+                to_attr="todays_ride_events",
             )
         )
         return queryset
