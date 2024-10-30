@@ -25,6 +25,7 @@ from wingz.utils.swagger_view import schema_view
 urlpatterns = [
     # API V1
     path(r"api/v1/sso/", include("wingz_sso.urls")),
+    path(r"api/v1/riding/", include("wingz_riding.urls")),
 ]
 
 
