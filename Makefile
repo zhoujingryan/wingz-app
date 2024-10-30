@@ -18,6 +18,6 @@ style:
 test:
 	@pytest -vv --tb=short -x --ds=wingz.settings.testing --no-migrations
 
-test-cov:
+cov:
 	coverage erase
 	@pytest -vv --tb=short -x --ds=wingz.settings.testing --cov-config=./.coveragec --no-migrations --cov-fail-under=95 --cov
