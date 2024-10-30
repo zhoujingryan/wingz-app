@@ -20,6 +20,7 @@ django==4.2.16
     # via
     #   django-debug-toolbar
     #   django-extensions
+    #   django-fakery
     #   django-filter
     #   djangorestframework
     #   djangorestframework-simplejwt
@@ -28,6 +29,8 @@ django==4.2.16
 django-debug-toolbar==4.4.6
     # via wingz-app (setup.py)
 django-extensions==3.2.3
+    # via wingz-app (setup.py)
+django-fakery==4.1.3
     # via wingz-app (setup.py)
 django-filter==24.3
     # via wingz-app (setup.py)
@@ -40,6 +43,8 @@ djangorestframework-simplejwt==5.3.1
     # via wingz-app (setup.py)
 drf-yasg==1.21.8
     # via wingz-app (setup.py)
+faker==10.0.0
+    # via django-fakery
 filelock==3.16.1
     # via virtualenv
 flake8==7.1.1
@@ -80,16 +85,24 @@ pyflakes==3.2.0
     #   flake8
 pyjwt==2.9.0
     # via djangorestframework-simplejwt
+python-dateutil==2.9.0.post0
+    # via faker
 pytz==2024.2
     # via drf-yasg
 pyyaml==6.0.2
     # via
     #   drf-yasg
     #   pre-commit
+six==1.16.0
+    # via
+    #   django-fakery
+    #   python-dateutil
 sqlparse==0.5.1
     # via
     #   django
     #   django-debug-toolbar
+text-unidecode==1.3
+    # via faker
 tomli==2.0.2
     # via
     #   autoflake
