@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django_filters",
     "drf_yasg",
     "wingz_sso",
+    "wingz_riding",
 ]
 
 MIDDLEWARE = [
