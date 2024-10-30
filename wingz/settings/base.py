@@ -143,6 +143,7 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("JWT",),
     "ACCESS_TOKEN_LIFETIME": datetime.timedelta(minutes=10),
     "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=3),
+    "USER_ID_FIELD": "pk",
 }
 
 # api docs
