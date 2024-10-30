@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.forms import model_to_dict
 
 
 class ModelDisplayMixin:
@@ -6,18 +7,9 @@ class ModelDisplayMixin:
 
     def __repr__(self):
         if settings.DEBUG:
+            displays = model_to_dict(self, fields=self.DISPLAY_FIELDS)
             return "<{}: \n{}>".format(
                 self.__class__.__name__,
-                "\t\n".join([f"{k}={v}" for k, v in self.__dict__.items()]),
+                "\t\n".join([f"{k}={v}" for k, v in displays.items()]),
             )
-        model_fields = [f.name for f in self._meta.fields]
-        displays = self.DISPLAY_FIELDS if self.DISPLAY_FIELDS else model_fields
-        for name in displays:
-            if name not in self.__dict__:
-                continue
-            return "<{} object {}: {}>".format(
-                self.__class__.__name__,
-                name,
-                self.__dict__[name],
-            )
-        return super(ModelDisplayMixin, self).__repr__()
+        return super().__repr__()
