@@ -40,6 +40,8 @@ inflection==0.5.1
     # via drf-yasg
 iniconfig==2.0.0
     # via pytest
+mysqlclient==2.2.5
+    # via wingz-app (setup.py)
 packaging==24.1
     # via
     #   drf-yasg

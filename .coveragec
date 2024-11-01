@@ -3,6 +3,7 @@ branch = True
 
 source =
     wingz_sso
+    wingz_riding
 
 omit =
     */migrations/*

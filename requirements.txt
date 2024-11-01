@@ -29,6 +29,8 @@ drf-yasg==1.21.8
     # via wingz-app (setup.py)
 inflection==0.5.1
     # via drf-yasg
+mysqlclient==2.2.5
+    # via wingz-app (setup.py)
 packaging==24.1
     # via drf-yasg
 pyjwt==2.9.0
