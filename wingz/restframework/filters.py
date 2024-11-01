@@ -1,3 +1,4 @@
+from django_filters.filters import BaseCSVFilter
 from django_filters.rest_framework import FilterSet
 
 
@@ -11,3 +12,7 @@ class BaseFilterSet(FilterSet):
         if filter_name in labels:
             filter_class._label = labels[filter_name]
         return filter_class
+
+
+class CoordinateFilter(BaseCSVFilter):
+    pass

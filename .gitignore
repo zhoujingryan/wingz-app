@@ -343,5 +343,4 @@ pyrightconfig.json
 !logs/.gitkeep
 **/settings/local.py
 .prompt.sh
-/manage.py
 # End of https://www.toptal.com/developers/gitignore/api/macos,pycharm,python,visualstudiocode

@@ -43,5 +43,5 @@ class Ride(BaseModel):
     def save(
         self, force_insert=False, force_update=False, using=None, update_fields=None
     ):
-        self.pickup_pos = Point(self.pickup_longitude, self.pickup_latitude)
+        self.pickup_pos = Point(self.pickup_latitude, self.pickup_longitude)
         super().save(force_insert, force_update, using, update_fields)

@@ -127,10 +127,7 @@ AUTH_USER_MODEL = "wingz_sso.User"
 
 # rest framework
 REST_FRAMEWORK = {
-    "DEFAULT_FILTER_BACKENDS": (
-        "django_filters.rest_framework.DjangoFilterBackend",
-        "rest_framework.filters.SearchFilter",
-    ),
+    "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
     "DEFAULT_PAGINATION_CLASS": "wingz.restframework.pagination.BasePageNumberPagination",
     "EXCEPTION_HANDLER": "wingz.restframework.exceptions.error_handler",
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),

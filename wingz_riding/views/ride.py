@@ -19,6 +19,10 @@ class RideSerializer(RideModelSerializer):
 
 
 class RideViewSet(mixins.ListModelMixin, BaseGenericViewSet):
+    """
+    Rides
+    """
+
     permission_classes = (IsAdminUser,)
     queryset = Ride.objects.order_by("-pk")
     serializer_class = RideSerializer
