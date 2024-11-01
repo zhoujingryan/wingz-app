@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
+    "django.contrib.gis",
     "django_extensions",
     "rest_framework",
     "django_filters",
@@ -153,5 +154,5 @@ SWAGGER_SETTINGS = {
     "SECURITY_DEFINITIONS": {
         "api_key": {"type": "apiKey", "in": "header", "name": "Authorization"}
     },
-    "DEFAULT_AUTO_SCHEMA_CLASS": "wingz.utils.swagger_view.CustomSwaggerAutoSchema",
+    "DEFAULT_AUTO_SCHEMA_CLASS": "wingz.utils.swagger_view.SwaggerAutoSchema",
 }

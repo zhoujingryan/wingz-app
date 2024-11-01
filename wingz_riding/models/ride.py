@@ -1,3 +1,5 @@
+from django.contrib.gis.db import models as gis_models
+from django.contrib.gis.geos import Point
 from django.db import models
 
 from wingz.db import BaseModel
@@ -36,3 +38,10 @@ class Ride(BaseModel):
     dropoff_latitude = models.FloatField(help_text="latitude of dropoff location")
     dropoff_longitude = models.FloatField(help_text="longitude of dropoff location")
     pickup_time = models.DateTimeField(help_text="pickup time")
+    pickup_pos = gis_models.PointField(srid=4326)
+
+    def save(
+        self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
+        self.pickup_pos = Point(self.pickup_longitude, self.pickup_latitude)
+        super().save(force_insert, force_update, using, update_fields)

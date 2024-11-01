@@ -4,7 +4,7 @@ TESTING = True
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
+        "ENGINE": "django.contrib.gis.db.backends.mysql",
         "NAME": ":memory:",
     }
 }

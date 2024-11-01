@@ -6,4 +6,4 @@ from ..models import RideEvent
 class RideEventModelSerializer(BaseModelSerializer):
     class Meta:
         model = RideEvent
-        fields = "__all__"
+        exclude = ("create_time", "update_time")
