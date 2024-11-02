@@ -16,6 +16,7 @@ style:
 	@flake8 .
 
 test:
+	@echo "Running tests..."
 	@pytest -vv --tb=short -x --ds=wingz.settings.testing wingz* --no-migrations
 
 cov:

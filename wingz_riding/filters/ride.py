@@ -25,6 +25,7 @@ class RideOrderingFilter(OrderingFilter):
                 raise ValidationError(
                     "gps_location is required when sort by distance_to_pickup"
                 )
+            # never
             return queryset  # pragma: no cover
         return qs
 

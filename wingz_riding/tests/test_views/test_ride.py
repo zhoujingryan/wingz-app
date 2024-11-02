@@ -102,6 +102,11 @@ class RideViewSetAdminTestCase(BaseAPITestCase):
         assert obj["driver"]["email"] == driver.email
 
     def test_rides_list_order_by_pickup_time(self):
+        # invalid ordering field
+        url = reverse("riding-rides-list") + "?ordering=abc"
+        response = self.client.get(url)
+        assert response.status_code == 400
+
         factory.m(Ride, quantity=5)()
         url = reverse("riding-rides-list") + "?ordering=pickup_time"
         response = self.client.get(url)
