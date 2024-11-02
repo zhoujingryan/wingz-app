@@ -16,8 +16,12 @@ style:
 	@flake8 .
 
 test:
-	@pytest -vv --tb=short -x --ds=wingz.settings.testing --no-migrations
+	@pytest -vv --tb=short -x --ds=wingz.settings.testing wingz* --no-migrations
 
 cov:
 	coverage erase
-	@pytest -vv --tb=short -x --ds=wingz.settings.testing --cov-config=./.coveragec --no-migrations --cov-fail-under=95 --cov
+	@pytest -vv --tb=short -x --ds=wingz.settings.testing wingz* --cov-config=./.coveragec --no-migrations --cov-fail-under=95 --cov
+
+cov-html:
+	coverage erase
+	@pytest -vv --tb=short -x --ds=wingz.settings.testing wingz* --cov-config=./.coveragec --cov-fail-under=95 --cov --cov-report=html

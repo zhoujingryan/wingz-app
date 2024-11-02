@@ -25,7 +25,7 @@ class RideOrderingFilter(OrderingFilter):
                 raise ValidationError(
                     "gps_location is required when sort by distance_to_pickup"
                 )
-            return queryset
+            return queryset  # pragma: no cover
         return qs
 
 
@@ -34,7 +34,7 @@ class RideFilter(BaseFilterSet):
         method="filter_by_gps_location",
         label="Pickup GPS location, used when sort by the distance to this location",
     )
-    ordering = RideOrderingFilter(fields=[("pickup_time1", "pickup_time")])
+    ordering = RideOrderingFilter(fields=[("pickup_time", "pickup_time")])
 
     class Meta:
         model = Ride

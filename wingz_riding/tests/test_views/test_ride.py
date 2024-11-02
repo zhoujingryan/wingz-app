@@ -100,3 +100,89 @@ class RideViewSetAdminTestCase(BaseAPITestCase):
         assert [e["id_ride_event"] for e in obj["todays_ride_events"]] == [2, 1]
         assert obj["rider"]["email"] == rider.email
         assert obj["driver"]["email"] == driver.email
+
+    def test_rides_list_order_by_pickup_time(self):
+        factory.m(Ride, quantity=5)()
+        url = reverse("riding-rides-list") + "?ordering=pickup_time"
+        response = self.client.get(url)
+        assert response.status_code == 200
+        assert response.data["count"] == 5
+
+        data = response.data["results"]
+        assert all(
+            data[i]["pickup_time"] <= data[i + 1]["pickup_time"]
+            for i in range(len(data) - 1)
+        )
+
+        url = reverse("riding-rides-list") + "?ordering=-pickup_time"
+        response = self.client.get(url)
+        assert response.status_code == 200
+        data = response.data["results"]
+        assert all(
+            data[i]["pickup_time"] >= data[i + 1]["pickup_time"]
+            for i in range(len(data) - 1)
+        )
+
+    def test_rides_list_order_by_distance_failed(self):
+        # gps_location is required
+        url = reverse("riding-rides-list") + "?ordering=distance_to_pickup"
+        response = self.client.get(url)
+        assert response.status_code == 400
+
+        # gps_location parameters error
+        url = (
+            reverse("riding-rides-list")
+            + "?ordering=-distance_to_pickup&gps_location=1,2,3"
+        )
+        response = self.client.get(url)
+        assert response.status_code == 400
+
+        # gps_location is not a valid number
+        url = (
+            reverse("riding-rides-list")
+            + "?ordering=-distance_to_pickup&gps_location=a,b"
+        )
+        response = self.client.get(url)
+        assert response.status_code == 400
+
+        # gps_location is not a valid coordinate
+        url = (
+            reverse("riding-rides-list")
+            + "?ordering=-distance_to_pickup&gps_location=100,20"
+        )
+        response = self.client.get(url)
+        assert response.status_code == 400
+        url = (
+            reverse("riding-rides-list")
+            + "?ordering=-distance_to_pickup&gps_location=20,200"
+        )
+        response = self.client.get(url)
+        assert response.status_code == 400
+
+    def test_ride_list_sort_by_distance_to_pickup(self):
+        bj_lat, bj_lon = (39.9, 116.4)
+        sjz_lat, sjz_lon = (38.0, 114.5)
+        xa_lat, xa_lon = (34.2, 108.9)
+        beijing = factory.m(Ride)(pickup_latitude=bj_lat, pickup_longitude=bj_lon)
+        shijiazhuang = factory.m(Ride)(
+            pickup_latitude=sjz_lat, pickup_longitude=sjz_lon
+        )
+        xian = factory.m(Ride)(pickup_latitude=xa_lat, pickup_longitude=xa_lon)
+        url = (
+            reverse("riding-rides-list")
+            + f"?ordering=distance_to_pickup&gps_location={bj_lat},{bj_lon}"
+        )
+        response = self.client.get(url)
+        assert response.status_code == 200
+        data = response.data["results"]
+        assert [beijing.pk, shijiazhuang.pk, xian.pk] == [d["id_ride"] for d in data]
+
+        cs_lat, cs_lon = (27.8, 113.2)
+        url = (
+            reverse("riding-rides-list")
+            + f"?ordering=distance_to_pickup&gps_location={cs_lat},{cs_lon}"
+        )
+        response = self.client.get(url)
+        assert response.status_code == 200
+        data = response.data["results"]
+        assert [xian.pk, shijiazhuang.pk, beijing.pk] == [d["id_ride"] for d in data]

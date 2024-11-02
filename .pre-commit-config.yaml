@@ -39,7 +39,6 @@ repos:
         name: run project tests
         entry: make test
         language: system
-        stages: [pre-push]
 
 exclude: |
   (?x)^(
