@@ -40,14 +40,14 @@ inflection==0.5.1
     # via drf-yasg
 iniconfig==2.0.0
     # via pytest
-mysqlclient==2.2.5
-    # via wingz-app (setup.py)
 packaging==24.1
     # via
     #   drf-yasg
     #   pytest
 pluggy==1.5.0
     # via pytest
+psycopg2-binary==2.9.10
+    # via wingz-app (setup.py)
 pyjwt==2.9.0
     # via djangorestframework-simplejwt
 pytest==8.3.3

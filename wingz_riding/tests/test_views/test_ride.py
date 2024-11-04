@@ -4,10 +4,16 @@ from django.urls import reverse
 from django_fakery.faker_factory import factory
 
 from wingz.restframework.tests import BaseAPITestCase
+from wingz.utils.random import random_latitude, random_longitude
 from wingz_riding.constants import RideStatus
 from wingz_riding.models import Ride, RideEvent
 from wingz_sso.constants import UserRole
 from wingz_sso.models import User
+
+ride_bp = factory.blueprint(Ride).fields(
+    pickup_latitude=lambda i, f: random_latitude(),
+    pickup_longitude=lambda i, f: random_longitude(),
+)
 
 
 class RideViewSetTestCase(BaseAPITestCase):
@@ -32,9 +38,9 @@ class RideViewSetAdminTestCase(BaseAPITestCase):
         assert "count" in data
 
     def test_filter_status_rides_list(self):
-        factory.m(Ride, quantity=3)(status=RideStatus.PICKUP)
-        factory.m(Ride, quantity=2)(status=RideStatus.EN_ROUTE)
-        factory.m(Ride, quantity=1)(status=RideStatus.DROPOFF)
+        ride_bp.m(quantity=3)(status=RideStatus.PICKUP)
+        ride_bp.m(quantity=2)(status=RideStatus.EN_ROUTE)
+        ride_bp.m(quantity=1)(status=RideStatus.DROPOFF)
         url = reverse("riding-rides-list") + f"?status={RideStatus.PICKUP}"
         response = self.client.get(url)
         assert response.status_code == 200
@@ -58,9 +64,9 @@ class RideViewSetAdminTestCase(BaseAPITestCase):
         u2 = factory.m(User)(email="test-rider2@email.com")
         u3 = factory.m(User)(email="example@email.com")
 
-        factory.m(Ride, quantity=3)(rider=u1)
-        factory.m(Ride, quantity=4)(rider=u2)
-        factory.m(Ride, quantity=5)(rider=u3)
+        ride_bp.m(quantity=3)(rider=u1)
+        ride_bp.m(quantity=4)(rider=u2)
+        ride_bp.m(quantity=5)(rider=u3)
 
         url = reverse("riding-rides-list") + "?rider__email__icontains=Email"
         response = self.client.get(url)
@@ -84,7 +90,7 @@ class RideViewSetAdminTestCase(BaseAPITestCase):
         rider = factory.m(User)(email="test-rider@email.com")
         driver = factory.m(User)(email="test-driver2@email.com")
 
-        ride = factory.m(Ride)(rider=rider, driver=driver)
+        ride = ride_bp.m()(rider=rider, driver=driver)
         factory.m(RideEvent)(id_ride_event=1, ride=ride)
         factory.m(RideEvent)(id_ride_event=2, ride=ride)
         event = factory.m(RideEvent)(id_ride_event=3, ride=ride)
@@ -107,7 +113,7 @@ class RideViewSetAdminTestCase(BaseAPITestCase):
         response = self.client.get(url)
         assert response.status_code == 400
 
-        factory.m(Ride, quantity=5)()
+        ride_bp.m(quantity=5)()
         url = reverse("riding-rides-list") + "?ordering=pickup_time"
         response = self.client.get(url)
         assert response.status_code == 200
@@ -137,7 +143,7 @@ class RideViewSetAdminTestCase(BaseAPITestCase):
         # gps_location parameters error
         url = (
             reverse("riding-rides-list")
-            + "?ordering=-distance_to_pickup&gps_location=1,2,3"
+            + "?ordering=distance_to_pickup&gps_location=1,2,3"
         )
         response = self.client.get(url)
         assert response.status_code == 400
@@ -145,7 +151,7 @@ class RideViewSetAdminTestCase(BaseAPITestCase):
         # gps_location is not a valid number
         url = (
             reverse("riding-rides-list")
-            + "?ordering=-distance_to_pickup&gps_location=a,b"
+            + "?ordering=distance_to_pickup&gps_location=a,b"
         )
         response = self.client.get(url)
         assert response.status_code == 400
@@ -153,13 +159,13 @@ class RideViewSetAdminTestCase(BaseAPITestCase):
         # gps_location is not a valid coordinate
         url = (
             reverse("riding-rides-list")
-            + "?ordering=-distance_to_pickup&gps_location=100,20"
+            + "?ordering=distance_to_pickup&gps_location=100,20"
         )
         response = self.client.get(url)
         assert response.status_code == 400
         url = (
             reverse("riding-rides-list")
-            + "?ordering=-distance_to_pickup&gps_location=20,200"
+            + "?ordering=distance_to_pickup&gps_location=20,200"
         )
         response = self.client.get(url)
         assert response.status_code == 400
@@ -168,11 +174,9 @@ class RideViewSetAdminTestCase(BaseAPITestCase):
         bj_lat, bj_lon = (39.9, 116.4)
         sjz_lat, sjz_lon = (38.0, 114.5)
         xa_lat, xa_lon = (34.2, 108.9)
-        beijing = factory.m(Ride)(pickup_latitude=bj_lat, pickup_longitude=bj_lon)
-        shijiazhuang = factory.m(Ride)(
-            pickup_latitude=sjz_lat, pickup_longitude=sjz_lon
-        )
-        xian = factory.m(Ride)(pickup_latitude=xa_lat, pickup_longitude=xa_lon)
+        beijing = ride_bp.m()(pickup_latitude=bj_lat, pickup_longitude=bj_lon)
+        shijiazhuang = ride_bp.m()(pickup_latitude=sjz_lat, pickup_longitude=sjz_lon)
+        xian = ride_bp.m()(pickup_latitude=xa_lat, pickup_longitude=xa_lon)
         url = (
             reverse("riding-rides-list")
             + f"?ordering=distance_to_pickup&gps_location={bj_lat},{bj_lon}"

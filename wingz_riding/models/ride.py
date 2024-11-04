@@ -37,7 +37,7 @@ class Ride(BaseModel):
     pickup_longitude = models.FloatField(help_text="longitude of pickup location")
     dropoff_latitude = models.FloatField(help_text="latitude of dropoff location")
     dropoff_longitude = models.FloatField(help_text="longitude of dropoff location")
-    pickup_time = models.DateTimeField(help_text="pickup time")
+    pickup_time = models.DateTimeField(help_text="pickup time", db_index=True)
     pickup_pos = gis_models.PointField(srid=4326)
 
     def save(

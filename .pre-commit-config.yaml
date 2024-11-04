@@ -39,6 +39,7 @@ repos:
         name: run project tests
         entry: make test
         language: system
+        pass_filenames: false
 
 exclude: |
   (?x)^(
