@@ -18,4 +18,4 @@ class RideEvent(BaseModel):
         db_index=True,
     )
     description = models.CharField(max_length=128)
-    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    created_at = models.DateTimeField(db_index=True)

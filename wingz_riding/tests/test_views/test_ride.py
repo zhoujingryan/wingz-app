@@ -91,8 +91,12 @@ class RideViewSetAdminTestCase(BaseAPITestCase):
         driver = factory.m(User)(email="test-driver2@email.com")
 
         ride = ride_bp.m()(rider=rider, driver=driver)
-        factory.m(RideEvent)(id_ride_event=1, ride=ride)
-        factory.m(RideEvent)(id_ride_event=2, ride=ride)
+        factory.m(RideEvent)(
+            id_ride_event=1, ride=ride, created_at=datetime.datetime.now()
+        )
+        factory.m(RideEvent)(
+            id_ride_event=2, ride=ride, created_at=datetime.datetime.now()
+        )
         event = factory.m(RideEvent)(id_ride_event=3, ride=ride)
         event.created_at = datetime.datetime.now() - datetime.timedelta(hours=25)
         event.save()
