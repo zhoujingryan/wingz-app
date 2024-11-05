@@ -8,9 +8,9 @@ It provides a RESTful Ride List API with simple JWT authentication.
 - **Django** / **Django REST Framework** / **GeoDjango**
 - **PostgreSQL** with **PostGIS** extension
 - **djangorestframework-simplejwt** for simple JWT authentication
-- **django-filter** for drf filtering
+- **django-filter** for DRF filtering
 - **drf-yasg** for API documentation
-- **django-pytest** / **pytest-cov**
+- **django-pytest** / **pytest-cov** for testing
 
 ## Development
 ### Requirements
@@ -25,8 +25,8 @@ Setup project virtual environment by using `venv`:
 ```
 or `virtualenv`.
 ```bash
-    pyenv virtualenv 3.10 ride-venv
-    pyenv local ride-venv
+    pyenv virtualenv 3.10 wingz-venv
+    pyenv local wingz-venv
 ```
 Install both dev and test dependencies:
 ```bash
@@ -37,8 +37,14 @@ Make sure you have a Postgres database instance with PostGIS extension up and ru
 ```bash
     docker run --name postgis -p 5432:5432 -e POSTGRES_PASSWORD=123456 -d postgis/postgis:16-3.4
 ```
-GeoDjango also requires certain setup in development environment
-Follow the instructions in the official documentation, see: [GeoDjango Installation](https://docs.djangoproject.com/en/5.1/ref/contrib/gis/install/)
+GeoDjango also requires certain setup in development environment.  
+Follow the instructions in the official documentation, see:
+[GeoDjango Installation](https://docs.djangoproject.com/en/5.1/ref/contrib/gis/install/),
+[Install Geolibs](https://docs.djangoproject.com/en/5.1/ref/contrib/gis/install/geolibs/)  
+Also make sure you have PostGIS extension enabled in your PostgreSQL instance:
+```SQL
+    CREATE EXTENSION postgis;
+```
 
 Copy and update your local settings file of your project:
 ```bash
@@ -84,7 +90,7 @@ And now we are done! You can use access token you got to Ride API.
   -H 'Authorization: JWT {Access-Token}'
 ```
 ### API Docs
-When the server is up and running, you can access the API docs at `http://localhost:8000/api/docs/`
+When the server is up and running, you can access the API docs at http://localhost:8000/api/docs/
 
 ### Testing
 
@@ -131,7 +137,10 @@ Run:
 ```
 
 ## Deploy
-
+To deploy the application, use `docker compose`:
+```bash
+    docker-compose up -d
+```
 
 ## Performance
 After further consideration, I decided to use GeoDjango and PostGIS for managing our data:
@@ -189,13 +198,13 @@ Example results:
 
 | full_name      | ride_date | ride_count |
 |:---------------| :---: | ---: |
-| Aaron Lee      | 2024-01 | 6 |
+| Aaron Barnham  | 2024-01 | 6 |
 | Aaron Ferguson | 2024-01 | 4 |
 | Aaron Glover   | 2024-01 | 6 |
 | Aaron Jones    | 2024-01 | 11 |
 | Aaron Montes   | 2024-01 | 5 |
 
 ## Wrap up
-Although this project is a small assignment project, but I still spend a lot of time on it, especially on testing the performance optimizing the queries. The
+Although this project is a small assignment project, but I still spent a lot of time on it, especially on testing the performance optimizing the queries. The
 tech stacks and the workflow I used are also my goto choices in my everyday work. I hope this project can well demonstrate my skills and knowledge in Django
 web development. Thank you for reading!

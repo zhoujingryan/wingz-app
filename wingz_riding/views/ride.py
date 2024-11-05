@@ -20,7 +20,7 @@ class RideSerializer(RideModelSerializer):
 
 class RideViewSet(mixins.ListModelMixin, BaseGenericViewSet):
     """
-    Rides
+    Rides Admin
     """
 
     permission_classes = (IsAdminUser,)

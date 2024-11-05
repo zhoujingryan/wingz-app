@@ -27,10 +27,14 @@ djangorestframework-simplejwt==5.3.1
     # via wingz-app (setup.py)
 drf-yasg==1.21.8
     # via wingz-app (setup.py)
+gunicorn==23.0.0
+    # via wingz-app (setup.py)
 inflection==0.5.1
     # via drf-yasg
 packaging==24.1
-    # via drf-yasg
+    # via
+    #   drf-yasg
+    #   gunicorn
 psycopg2-binary==2.9.10
     # via wingz-app (setup.py)
 pyjwt==2.9.0
