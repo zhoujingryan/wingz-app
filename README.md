@@ -139,6 +139,7 @@ Run:
 ## Deploy
 To deploy the application, use `docker compose`:
 ```bash
+    export DJANGO_SETTINGS_MODULE=wingz.settings.deploy
     docker-compose up -d
 ```
 
